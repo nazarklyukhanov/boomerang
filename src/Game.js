@@ -38,7 +38,7 @@ class Game {
     if (this.boomerang.position === this.enemy.position) {
       this.enemy.die();
     }
-    if (this.boomerang.position === this.hero.position) {
+    if (this.boomerang.position === this.hero.position + 1) {
       this.track[this.boomerang.position] = ' '
     }
   }

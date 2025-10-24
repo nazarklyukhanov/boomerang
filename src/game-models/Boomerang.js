@@ -18,7 +18,10 @@ class Boomerang {
 
       // Меняем направление, если долетели до края
       if (this.position >= trackLength - 1) direction = -1;
-      if (this.position <= heroPos) clearInterval(interval);
+      if (this.position <= heroPos) {
+        clearInterval(interval)
+        this.position = ' ';
+      };
     }, 100);
   }
 
