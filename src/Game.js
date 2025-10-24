@@ -12,7 +12,7 @@ const View = require('./View');
 // Тут будут все настройки, проверки, запуск.
 
 class Game {
-  constructor({ trackLength }) {
+  constructor({ trackLength, enemyLimit }) {
     this.trackLength = trackLength;
     this.boomerang = new Boomerang();
     this.hero = new Hero({ position: 3, boomerang: this.boomerang }); // Герою можно аргументом передать бумеранг.
@@ -20,6 +20,9 @@ class Game {
     this.view = new View();
     this.track = [];
     this.isBoomerangInFlight = false;
+    this.enemyLimit = enemyLimit;
+    this.enemyCounter = 0;
+    this.gameStartDate = new Date();
     this.regenerateTrack();
   }
 
@@ -41,6 +44,7 @@ class Game {
       // меняет скин врага и возвращаем его на стартовую позицию, если в него попал бумеранг
       if (this.boomerang.position === this.enemy.position-1) {
         this.enemy.generateSkin();
+        this.enemyCounter += 1;
         this.enemy.position = this.trackLength;
         direction = -1;
       }
@@ -78,6 +82,12 @@ class Game {
     if (this.hero.position === this.enemy.position) {
       this.hero.die();
     }
+    if (this.enemyCounter === this.enemyLimit) {
+      setTimeout(() => {
+        this.view.congratulations();
+        process.exit();
+      }, 100);
+    }
     // if (this.boomerang.position === this.enemy.position) {
     //   this.enemy.die();
     // }
@@ -92,7 +102,7 @@ class Game {
       // Let's play!
       this.check();
       this.regenerateTrack();
-      this.view.render(this.track);
+      this.view.render(this.track, this.enemyCounter, this.enemyLimit);
     });
   }
 }
