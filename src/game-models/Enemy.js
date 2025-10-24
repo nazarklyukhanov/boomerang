@@ -1,25 +1,34 @@
-// Враг.
-
 class Enemy {
-  constructor() {
+  constructor(trackLength, height) {
+    this.trackLength = trackLength;
+    this.height = height;
+    this.skin = '👾';
     this.generateSkin();
-    this.position = 2;
+    this.respawn(); // создаём с рандомной строкой
   }
 
   generateSkin() {
-    const skins = ['👾', '💀', '👹', '👻', '👽', '👿', '💩', '🤡', '🤺', '🧛', '🧟', '🎃'];
+    const skins = ['👾', '👹', '👻', '👽', '👿', '🎃'];
     this.skin = skins[Math.floor(Math.random() * skins.length)];
   }
 
+  // появляется справа на случайной строке
+  respawn() {
+    this.position = this.trackLength - 1;
+    this.y = Math.floor(Math.random() * this.height);
+    this.generateSkin();
+  }
+
   moveLeft() {
-    // Идём влево.
-    this.position -= 1;
+    this.position = Math.max(0, this.position - 1);
   }
 
   die() {
-    this.position = '?';
+    this.skin = '💀';
     console.log('Enemy is dead!');
   }
 }
 
 module.exports = Enemy;
+
+

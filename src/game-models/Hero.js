@@ -1,24 +1,24 @@
-// Наш герой.
-
 class Hero {
   constructor({ position }) {
-    this.skin = '🤠'; // можете использовать любые emoji '💃'
+    this.skin = '🤠';
     this.position = position;
+    this.y = 3; // стартуем снизу
   }
 
   moveLeft() {
-    // Идём влево.
-    this.position -= 1;
+    this.position = Math.max(0, this.position - 1);
   }
 
-  moveRight() {
-    // Идём вправо.
-    this.position += 1;
+  moveRight(trackLength) {
+    this.position = Math.min(trackLength - 1, this.position + 1);
   }
 
-  attack() {
-    // Атакуем.
-    this.boomerang.fly();
+  moveUp() {
+    this.y = Math.max(0, this.y - 1);
+  }
+
+  moveDown(height) {
+    this.y = Math.min(height - 1, this.y + 1);
   }
 
   die() {
@@ -29,3 +29,4 @@ class Hero {
 }
 
 module.exports = Hero;
+

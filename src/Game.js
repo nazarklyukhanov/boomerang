@@ -1,46 +1,102 @@
-// Импортируем всё необходимое.
-// Или можно не импортировать,
-// а передавать все нужные объекты прямо из run.js при инициализации new Game().
-
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
-// const Boomerang = require('./game-models/Boomerang');
+const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 
-// Основной класс игры.
-// Тут будут все настройки, проверки, запуск.
-
 class Game {
-  constructor({ trackLength }) {
+  constructor({ trackLength, enemyLimit, name }) {
     this.trackLength = trackLength;
-    this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
-    this.enemy = new Enemy();
+    this.height = 4; // четыре строки
+    this.boomerang = new Boomerang();
+    this.hero = new Hero({ position: 3 });
+    this.enemy = new Enemy(this.trackLength, this.height);
     this.view = new View();
     this.track = [];
+    this.isBoomerangInFlight = false;
+    this.enemyLimit = enemyLimit;
+    this.enemyCounter = 0;
+    this.userName = name;
     this.regenerateTrack();
   }
 
+  heroAttack() {
+    if (this.isBoomerangInFlight) return;
+
+    this.isBoomerangInFlight = true;
+    this.boomerang.position = this.hero.position + 1;
+    let direction = 1;
+
+    const interval = setInterval(() => {
+      if (this.boomerang.position >= this.trackLength - 1) direction = -1;
+
+      // 💥 Попадание во врага
+      if (
+        this.boomerang.position === this.enemy.position - 1 &&
+        this.hero.y === this.enemy.y
+      ) {
+        this.enemyCounter++;
+        this.enemy.respawn(); //
+        direction = -1;
+      }
+
+      if (this.boomerang.position <= this.hero.position) {
+        clearInterval(interval);
+        this.boomerang.position = '';
+        this.isBoomerangInFlight = false;
+      }
+
+      this.boomerang.position += direction;
+    }, 10);
+  }
+
+  enemyAttack() {
+    setInterval(() => {
+      this.enemy.moveLeft();
+    }, 100);
+  }
+
   regenerateTrack() {
-    // Сборка всего необходимого (герой, враг(и), оружие)
-    // в единую структуру данных
-    this.track = (new Array(this.trackLength)).fill(' ');
-    this.track[this.hero.position] = this.hero.skin;
+    this.tracks = Array.from({ length: this.height }, () =>
+      new Array(this.trackLength).fill(' ')
+    );
+
+    this.tracks[this.hero.y][this.hero.position] = this.hero.skin;
+    this.tracks[this.enemy.y][this.enemy.position] = this.enemy.skin;
+
+    if (this.boomerang.position)
+      this.tracks[this.hero.y][this.boomerang.position] = this.boomerang.skin;
   }
 
   check() {
-    if (this.hero.position === this.enemy.position) {
+    if (
+      this.hero.position === this.enemy.position &&
+      this.hero.y === this.enemy.y
+    ) {
       this.hero.die();
+    }
+
+    if (this.enemyCounter === this.enemyLimit) {
+      setTimeout(() => {
+        this.view.congratulations(this.userName);
+        process.exit();
+      }, 100);
+    }
+    if (this.enemy.position === 0) {
+      this.view.defeat(this.enemyCounter, this.enemyLimit);
+      process.exit();
     }
   }
 
   play() {
+    this.enemyAttack();
     setInterval(() => {
-      // Let's play!
       this.check();
       this.regenerateTrack();
-      this.view.render(this.track);
+      this.view.render(this.tracks, this.enemyCounter, this.enemyLimit);
     });
   }
 }
 
 module.exports = Game;
+
+
