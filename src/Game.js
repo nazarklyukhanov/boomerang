@@ -34,7 +34,7 @@ class Game {
         this.hero.y === this.enemy.y
       ) {
         this.enemyCounter++;
-        this.enemy.respawn(); // 🆕 теперь появляется на случайной строке
+        this.enemy.respawn(); //
         direction = -1;
       }
 
@@ -92,7 +92,7 @@ class Game {
       this.check();
       this.regenerateTrack();
       this.view.render(this.tracks, this.enemyCounter, this.enemyLimit);
-    }, 100);
+    });
   }
 }
 

@@ -16,6 +16,7 @@ class Enemy {
   respawn() {
     this.position = this.trackLength - 1;
     this.y = Math.floor(Math.random() * this.height);
+    this.generateSkin();
   }
 
   moveLeft() {
