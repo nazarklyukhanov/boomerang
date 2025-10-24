@@ -4,7 +4,7 @@ const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 
 class Game {
-  constructor({ trackLength, enemyLimit }) {
+  constructor({ trackLength, enemyLimit, name }) {
     this.trackLength = trackLength;
     this.height = 4; // четыре строки
     this.boomerang = new Boomerang();
@@ -15,6 +15,7 @@ class Game {
     this.isBoomerangInFlight = false;
     this.enemyLimit = enemyLimit;
     this.enemyCounter = 0;
+    this.userName = name;
     this.regenerateTrack();
   }
 
@@ -76,7 +77,7 @@ class Game {
 
     if (this.enemyCounter === this.enemyLimit) {
       setTimeout(() => {
-        this.view.congratulations();
+        this.view.congratulations(this.userName);
         process.exit();
       }, 100);
     }

@@ -8,9 +8,9 @@ class View {
     console.log(`\nВрагов убито: ${counter} / ${limit}`);
   }
 
-  congratulations() {
+  congratulations(name) {
     console.clear();
-    console.log('🎉 Победа! Все враги повержены! 🎉');
+    console.log(`${name}, победа! Все враги повержены! 🎉`);
   }
 
   defeat(counter, limit){
