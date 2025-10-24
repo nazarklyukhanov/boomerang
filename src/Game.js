@@ -15,7 +15,7 @@ class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
     this.boomerang = new Boomerang();
-    this.hero = new Hero({position: 3, boomerang: this.boomerang}); // Герою можно аргументом передать бумеранг.
+    this.hero = new Hero({ position: 3, boomerang: this.boomerang }); // Герою можно аргументом передать бумеранг.
     this.enemy = new Enemy(this.trackLength);
     this.view = new View();
     this.track = [];
@@ -25,7 +25,7 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = (new Array(this.trackLength)).fill(' ');
+    this.track = new Array(this.trackLength).fill(' ');
     this.track[this.hero.position] = this.hero.skin;
     this.track[this.boomerang.position] = this.boomerang.skin;
     this.track[this.enemy.position] = this.enemy.skin;
@@ -34,6 +34,12 @@ class Game {
   check() {
     if (this.hero.position === this.enemy.position) {
       this.hero.die();
+    }
+    if (this.boomerang.position === this.enemy.position) {
+      this.enemy.die();
+    }
+    if (this.boomerang.position === this.hero.position) {
+      this.track[this.boomerang.position] = ' '
     }
   }
 
