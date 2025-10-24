@@ -4,7 +4,8 @@
 
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
-// const Boomerang = require('./game-models/Boomerang');
+// const runInteractiveConsole = require('./keyboard');
+const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 
 // Основной класс игры.
@@ -13,8 +14,9 @@ const View = require('./View');
 class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
-    this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
-    this.enemy = new Enemy();
+    this.boomerang = new Boomerang();
+    this.hero = new Hero({position: 3, boomerang: this.boomerang}); // Герою можно аргументом передать бумеранг.
+    this.enemy = new Enemy(this.trackLength);
     this.view = new View();
     this.track = [];
     this.regenerateTrack();
@@ -25,6 +27,8 @@ class Game {
     // в единую структуру данных
     this.track = (new Array(this.trackLength)).fill(' ');
     this.track[this.hero.position] = this.hero.skin;
+    this.track[this.boomerang.position] = this.boomerang.skin;
+    this.track[this.enemy.position] = this.enemy.skin;
   }
 
   check() {

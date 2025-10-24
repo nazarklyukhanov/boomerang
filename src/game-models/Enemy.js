@@ -1,9 +1,10 @@
 // Враг.
 
 class Enemy {
-  constructor() {
+  constructor(trackLength) {
+    this.skin = '👾';
     this.generateSkin();
-    this.position = 2;
+    this.position = trackLength-1;
   }
 
   generateSkin() {
