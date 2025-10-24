@@ -15,7 +15,7 @@ function runInteractiveConsole(game) {
     s: () => console.log('s'),
     d: () => game.hero.moveRight(),
     a: () => game.hero.moveLeft(),
-    space: () => game.hero.attack(game.trackLength),
+    space: () => game.heroAttack()
   };
 
   keypress(process.stdin);

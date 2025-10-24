@@ -2,7 +2,7 @@
 
 class Enemy {
   constructor(trackLength) {
-    this.skin = '👾';
+    this.skin = ' ';
     this.generateSkin();
     this.position = trackLength-1;
   }

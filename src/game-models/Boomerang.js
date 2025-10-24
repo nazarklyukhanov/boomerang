@@ -5,32 +5,18 @@
 class Boomerang {
   constructor() {
     this.skin = '🌀';
-    // this.position = heroPos+1;
     this.position = null;
   }
 
-  fly(heroPos, trackLength) {
-    this.position = heroPos + 1;
-    let direction = 1; // 1 — летим вправо, -1 — обратно
+  // moveLeft() {
+  //   // Идём влево.
+  //   this.position -= 1;
+  // }
 
-    const interval = setInterval(() => {
-      this.position += direction;
-
-      // Меняем направление, если долетели до края
-      if (this.position >= trackLength - 1) direction = -1;
-      if (this.position <= heroPos) clearInterval(interval);
-    }, 100);
-  }
-
-  moveLeft() {
-    // Идём влево.
-    this.position -= 1;
-  }
-
-  moveRight() {
-    // Идём вправо.
-    this.position += 1;
-  }
+  // moveRight() {
+  //   // Идём вправо.
+  //   this.position += 1;
+  // }
 }
 
 module.exports = Boomerang;
