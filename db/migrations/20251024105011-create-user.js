@@ -12,6 +12,12 @@ module.exports = {
       username: {
         type: Sequelize.STRING
       },
+      rating: {
+        type: Sequelize.INTEGER
+      },
+      total_seconds: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
